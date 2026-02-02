@@ -1,0 +1,128 @@
+@import "bootstrap/scss/bootstrap";
+
+@mixin full-size {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+// 針對整個網頁的底色
+body {
+    background-color: rgb(253, 229, 223);
+}
+
+// Layout 專用樣式
+.custom-navbar {
+    background-color: rgb(245, 197, 185);
+
+    .nav-link-item {
+        color: white;
+        text-decoration: none;
+        font-size: 1.6rem;
+        margin: 1rem 1.5rem;
+        margin-block-end: 0.2rem;
+        font-weight: 550;
+
+        &:hover {
+            color: rgb(249, 149, 121);
+        }
+    }
+}
+
+
+// 首頁專用樣式
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+
+    .hero-overlay {
+        @include full-size;
+        background-color: rgba(160, 160, 160, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        padding-bottom: 18%;
+
+        h1,
+        h3 {
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        h3 {
+            opacity: 0.9;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+    }
+
+    .img-custom {
+        @include full-size;
+        object-fit: cover;
+        z-index: -1;
+    }
+}
+
+// 產品詳細頁專用樣式
+
+
+// 產品購物車專用樣式
+.custom-cart {
+    @extend .mt-3;
+    color: rgb(109, 77, 67);
+    font-weight: bold;
+}
+
+.custom-cart-table {
+    @extend .table;
+    @extend .mt-3;
+
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: separate;
+
+    thead {
+        background-color: rgb(245, 197, 185);
+        color: white;
+
+
+        th {
+            border: none; // 移除表頭邊框線
+            padding: 1rem;
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                padding: 2rem 1.5rem;
+            }
+        }
+    }
+
+    h3 {
+        color: rgb(247, 155, 132);
+        font-weight: bold;
+    }
+
+    h5 {
+        color: rgb(109, 77, 67);
+        font-weight: bold;
+    }
+}

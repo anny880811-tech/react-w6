@@ -4,12 +4,12 @@ const FrontendLayout = () => {
     return (
         <>
             <header>
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
                     <div className="container">
                         <div className="navbar-nav">
-                            <Link className="h4 mt-3 mx-4" to='/'>首頁</Link>
-                            <Link className="h4 mt-3 mx-4" to='/product'>產品頁面</Link>
-                            <Link className="h4 mt-3 mx-4" to='/cart'>購物車頁面</Link>
+                            <Link className="nav-link-item" to='/'>首頁</Link>
+                            <Link className="nav-link-item" to='/product'>產品頁面</Link>
+                            <Link className="nav-link-item" to='/cart'>購物車頁面</Link>
                         </div>
                     </div>
                 </nav>
