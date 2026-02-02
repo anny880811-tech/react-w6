@@ -59,15 +59,15 @@ const Products = () => {
                 {products.map((product) => {
                     return (
                         <div className="col-4" key={product.id}>
-                            <div className="card">
-                                <img src={product.imageUrl} className="card-img-top object-fit-cover" style={{ 'height': '250px' }} alt="主圖" />
-                                <div className="card-body">
+                            <div className="custom-card">
+                                <img src={product.imageUrl} className="custom-card-img" alt="主圖" />
+                                <div className="custom-card-body">
                                     <h5 className="card-title">{product.title}</h5>
                                     <p className="card-text">{product.category}</p>
-                                    <p className="card-text">原價 : <del>{product.origin_price} 元</del> / 售價 : {product.price} 元</p>
+                                    <p className="card-text mb-3">原價 : <del>{product.origin_price} 元</del> / 售價 : {product.price} 元</p>
                                     <div className="d-flex gap-2">
-                                        <button type="button" className="btn btn-outline-primary" onClick={() => handleView(product.id)}>查看更多</button>
-                                        <button type="button" className="btn btn-outline-primary" onClick={() => { addToCart(product.id, 1) }}><i className="bi bi-cart-fill"></i>加入購物車</button>
+                                        <button type="button" className="btn btn-outline-brown" onClick={() => handleView(product.id)}>查看更多</button>
+                                        <button type="button" className="btn btn-outline-brown" onClick={() => { addToCart(product.id, 1) }}><i className="bi bi-cart-fill"></i>加入購物車</button>
                                     </div>
                                 </div>
                             </div>

@@ -80,9 +80,9 @@ const Cart = () => {
                                         <td className="align-middle">
                                             <div className="d-flex justify-content-center">
                                                 <div className="input-group" style={{ width: '120px' }}>
-                                                    <button type="button" className="btn btn-outline-secondary" disabled={product.qty <= 1} onClick={() => { updateCartItem(product.id, product.product.id, product.qty - 1) }}>-</button>
+                                                    <button type="button" className="btn btn-outline-brown" disabled={product.qty <= 1} onClick={() => { updateCartItem(product.id, product.product.id, product.qty - 1) }}>-</button>
                                                     <input type="text" className="form-control text-center border-secondary" value={product.qty} readOnly />
-                                                    <button type="button" className="btn btn-outline-secondary" onClick={() => { updateCartItem(product.id, product.product.id, product.qty + 1) }}>+</button>
+                                                    <button type="button" className="btn btn-outline-brown" onClick={() => { updateCartItem(product.id, product.product.id, product.qty + 1) }}>+</button>
                                                 </div>
                                             </div>
                                         </td>

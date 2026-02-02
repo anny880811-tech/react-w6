@@ -8,6 +8,31 @@
     height: 100%;
 }
 
+// 按鈕顏色
+.btn-outline-brown {
+    border-color: rgb(109, 77, 67);
+    color: rgb(109, 77, 67);
+
+    &:hover {
+        // 滑過時的背景與文字顏色
+        background-color: rgb(109, 77, 67);
+        border-color: rgb(109, 77, 67);
+        color: white;
+    }
+}
+
+.btn-deepPink {
+    background-color: rgb(245, 197, 185);
+    color: white;
+    font-weight: bold;
+    border-radius: 15px;
+
+    &:hover {
+        // 滑過時的背景與文字顏色
+        background-color: rgb(253, 229, 223);
+    }
+}
+
 // 針對整個網頁的底色
 body {
     background-color: rgb(253, 229, 223);
@@ -62,6 +87,7 @@ body {
         h3 {
             opacity: 0.9;
         }
+
         p {
             font-size: 1.1rem;
             line-height: 1.6;
@@ -78,7 +104,112 @@ body {
     }
 }
 
+// 產品專用樣式
+.custom-card {
+    background-color: rgb(248, 242, 242);
+    color: rgb(109, 77, 67);
+    font-weight: bold;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: separate;
+    margin: 0.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(109, 77, 67, 0.1);
+
+    .custom-card-img {
+        @extend .card-img-top;
+        object-fit: cover;
+        width: 100%;
+        height: 250px;
+        aspect-ratio: 4 / 3;
+    }
+
+    .custom-card-body {
+        padding: 1rem;
+    }
+
+    .d-flex.gap-2 {
+        margin-top: 0.5rem;
+    }
+
+    h5 {
+        color: rgb(109, 77, 67);
+        font-weight: bold;
+        margin-bottom: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    p {
+        margin-bottom: 0.2rem;
+    }
+}
+
+
 // 產品詳細頁專用樣式
+.main-image-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 1rem;
+
+    .product-main-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.thumb-scroll-container {
+    display: flex;
+    padding-bottom: 8px;
+    justify-content: center;
+    gap: 7px;
+
+    &::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #e2e2e2;
+        border-radius: 4px;
+    }
+
+    .thumb-item {
+        width: 130px;
+        height: 130px;
+        flex-shrink: 0;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        &:hover,
+        &.active {
+            border-color: rgb(109, 77, 67);
+        }
+    }
+}
+
+.custom-color-box {
+    color: rgb(109, 77, 67);
+
+    h3 {
+        font-weight: bold;
+    }
+}
 
 
 // 產品購物車專用樣式
