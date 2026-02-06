@@ -1,12 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Loading from "../../components/Loading";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 const Cart = () => {
-
+    const [isLoading, setIsLoading] = useState('');
     const [cartItem, setCartItem] = useState([]);
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const getCart = async () => {
         try {
@@ -21,9 +24,7 @@ const Cart = () => {
         getCart();
     }, [])
 
-
-
-    const updateCartItem = async (id, product_id, qty) => {
+    const updateCartItem = async (id, product_id, qty, action) => {
         const updateQty = {
             'data': {
                 'product_id': product_id,
@@ -31,12 +32,14 @@ const Cart = () => {
             },
         };
         try {
+            setIsLoading(`${id}-${action}`);
             const res = await axios.put(`${API_BASE}/api/${API_PATH}/cart/${id}`, updateQty)
-            console.log(`修改成功!`);
             getCart();
         } catch (error) {
             console.log("資料錯誤", error.response.data);
-        };
+        } finally {
+            setIsLoading('');
+        }
     };
 
     const deleteCartItem = async (id) => {
@@ -49,8 +52,30 @@ const Cart = () => {
             console.log("資料錯誤", error.response.data);
         }
     }
-
-
+    const onSubmit = async (data) => {
+        const { userName, email, tel, address, message } = data;
+        try {
+            setIsLoading('loading-submit');
+            const res = await axios.post(`${API_BASE}/api/${API_PATH}/order`, {
+                data: {
+                    user: {
+                        name: userName,
+                        email,
+                        tel,
+                        address,
+                    },
+                    message,
+                }
+            });
+            console.log(res.data);
+            getCart();
+            reset();
+        } catch (error) {
+            alert('失敗', error.response?.data?.message);
+        } finally {
+            setIsLoading('');
+        }
+    }
 
     return (<>
         <div className="container mt-3">
@@ -67,6 +92,7 @@ const Cart = () => {
                             </tr>
                         </thead>
                         <tbody>
+
                             {cartItem.map((product) => {
                                 return (
                                     <tr key={product.product.id}>
@@ -80,9 +106,17 @@ const Cart = () => {
                                         <td className="align-middle">
                                             <div className="d-flex justify-content-center">
                                                 <div className="input-group" style={{ width: '120px' }}>
-                                                    <button type="button" className="btn btn-outline-brown" disabled={product.qty <= 1} onClick={() => { updateCartItem(product.id, product.product.id, product.qty - 1) }}>-</button>
+                                                    <button type="button" className="btn btn-outline-brown-sm"
+                                                        onClick={() => { updateCartItem(product.id, product.product.id, product.qty - 1, 'reduce') }}
+                                                        disabled={product.qty <= 1 || isLoading === `${product.id}-reduce`}>
+                                                        {isLoading === `${product.id}-reduce` ? <Loading height={20} width={20} /> : '-'}</button>
+
                                                     <input type="text" className="form-control text-center border-secondary" value={product.qty} readOnly />
-                                                    <button type="button" className="btn btn-outline-brown" onClick={() => { updateCartItem(product.id, product.product.id, product.qty + 1) }}>+</button>
+                                                    <button type="button" className="btn btn-outline-brown-sm"
+                                                        onClick={() => { updateCartItem(product.id, product.product.id, product.qty + 1, 'add') }}
+                                                        disabled={isLoading === `${product.id}-add`}>
+                                                        {isLoading === `${product.id}-add` ? <Loading height={20} width={20} /> : '+'}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -102,7 +136,52 @@ const Cart = () => {
                         </tbody>
                     </table>
                     <div className="text-end mt-5">
-                        <h4>總金額 : {cartItem.reduce((acc, item) => { return acc + (item.product.price * item.qty) }, 0)} 元</h4>
+                        <h4 className='mb-5'>總金額 : {cartItem.reduce((acc, item) => { return acc + (item.product.price * item.qty) }, 0)} 元</h4>
+                    </div>
+                    <div className="cart-form">
+                        <h3>填寫訂單資訊</h3>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className="form-group">
+                                <label htmlFor="userName" className="required">訂購人姓名</label>
+                                <input type="text" className='form-control' id='userName' placeholder="請輸入訂購人姓名"
+                                    {...register('userName', { required: "訂購人姓名為必填", minLength: { value: 2, message: '姓名至少 2 個字' } })} />
+                                <span className="error-message">{errors.userName ? errors.userName.message : ''}</span>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="email" className="required">Email</label>
+                                <input type="email" className='form-control' id="email" placeholder="請輸入電子郵件"
+                                    {...register('email', {
+                                        required: "電子郵件為必填", pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: "請輸入有效的 Email 格式",
+                                        },
+                                    })} />
+                                <span className="error-message">{errors.email ? errors.email.message : ''}</span>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="tel" className="required">訂購人電話</label>
+                                <input type="text" className='form-control' id="tel" placeholder="請輸入手機號碼"
+                                    {...register('tel', {
+                                        required: '手機號碼為必填', pattern: {
+                                            value: /^[0-9]{10}$/,
+                                            message: '手機號碼格式錯誤',
+                                        },
+                                    })} />
+                                <span className="error-message">{errors.tel ? errors.tel.message : ''}</span>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="address" className="required">訂購人地址</label>
+                                <input type="text" className='form-control' id="address" placeholder="請輸入地址"
+                                    {...register('address', { required: '訂購人地址為必填', })} />
+                                <span className="error-message">{errors.address ? errors.address.message : ''}</span>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="message">留言</label>
+                                <textarea type="text" className='form-control' id="message" placeholder="有想對我們說的話嗎?"
+                                    {...register('message')} />
+                            </div>
+                            <button type="submit" className="btn-brown" disabled={isLoading !== '' || cartItem.length === 0}>{isLoading === 'loading-submit' ? <div className="custom-loading"><Loading height={30} width={30} /><span className="ms-2">訂單送出中...</span></div> : '送出訂單'}</button>
+                        </form>
                     </div>
                 </div>
             </div>

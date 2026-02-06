@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 const Products = () => {
+    const [isLoading, setIsLoading] = useState('');
     const [products, setproducts] = useState([]);
     const [cartItem, setCartItem] = useState([]);
     const navigate = useNavigate();
@@ -43,13 +45,14 @@ const Products = () => {
             }
         }
         try {
+            setIsLoading(product_id);
             const res = await axios.post(`${API_BASE}/api/${API_PATH}/cart`, sentData)
-            console.dir(res.data.products);
-            console.log(`已成功加入購物車`);
             getCart();
         } catch (error) {
             console.log("資料錯誤", error.response.data)
-        };
+        } finally {
+            setIsLoading('');
+        }
     };
 
     return (<>
@@ -67,7 +70,8 @@ const Products = () => {
                                     <p className="card-text mb-3">原價 : <del>{product.origin_price} 元</del> / 售價 : {product.price} 元</p>
                                     <div className="d-flex gap-2">
                                         <button type="button" className="btn btn-outline-brown" onClick={() => handleView(product.id)}>查看更多</button>
-                                        <button type="button" className="btn btn-outline-brown" onClick={() => { addToCart(product.id, 1) }}><i className="bi bi-cart-fill"></i>加入購物車</button>
+                                        <button type="button" className="btn btn-outline-brown" onClick={() => { addToCart(product.id, 1) }} disabled={isLoading === product.id}>
+                                            {isLoading === product.id ? <div className="custom-loading"><Loading height={20} width={20} /> 正在加入購物車</div> : <div><i className="bi bi-cart-fill"></i>加入購物車</div>}</button>
                                     </div>
                                 </div>
                             </div>

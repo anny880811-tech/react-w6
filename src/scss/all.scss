@@ -12,12 +12,44 @@
 .btn-outline-brown {
     border-color: rgb(109, 77, 67);
     color: rgb(109, 77, 67);
+    font-weight: bold;
 
-    &:hover {
+    &:hover:not(:disabled) {
         // 滑過時的背景與文字顏色
         background-color: rgb(109, 77, 67);
         border-color: rgb(109, 77, 67);
         color: white;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        color: rgb(246, 133, 105);
+        pointer-events: none;
+        .custom-loading {
+            color: rgb(246, 133, 105);
+        }
+    }
+}
+
+.btn-outline-brown-sm {
+    border-color: rgb(109, 77, 67);
+    color: rgb(109, 77, 67);
+    font-weight: bold;
+
+    &:hover:not(:disabled) {
+        // 滑過時的背景與文字顏色
+        background-color: rgb(109, 77, 67);
+        border-color: rgb(109, 77, 67);
+        color: white;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        color: rgb(114, 90, 83);
+        pointer-events: none;
+        .custom-loading {
+            color: rgb(114, 90, 83);
+        }
     }
 }
 
@@ -33,6 +65,19 @@
     }
 }
 
+.custom-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+h4 {
+    color: rgb(109, 77, 67);
+    font-weight: bold;
+}
+
 // 針對整個網頁的底色
 body {
     background-color: rgb(253, 229, 223);
@@ -41,6 +86,17 @@ body {
 // Layout 專用樣式
 .custom-navbar {
     background-color: rgb(245, 197, 185);
+    display: flex;
+    justify-content: space-between; // 讓左右兩組分開
+    align-items: center;
+    padding: 0.5%;
+    min-height: 60px;
+    flex-wrap: wrap;
+
+    .nav-links-group .nav-login-group {
+        display: flex;
+        align-items: center;
+    }
 
     .nav-link-item {
         color: white;
@@ -123,8 +179,7 @@ body {
         @extend .card-img-top;
         object-fit: cover;
         width: 100%;
-        height: 250px;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 4/3;
     }
 
     .custom-card-body {
@@ -255,5 +310,190 @@ body {
     h5 {
         color: rgb(109, 77, 67);
         font-weight: bold;
+    }
+}
+
+.cart-form {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    border-radius: 12px;
+    background-color: rgb(249, 249, 249);
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* 讓內部的 form-group 置中 */
+        width: 100%;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        width: 100%;
+        max-width: 800px;
+        align-items: stretch;
+
+        label {
+            margin-bottom: 0.5rem;
+            /* 將數值調大（例如從 0.5rem 改到 12px 或更多） */
+            display: block;
+            color: rgb(109, 77, 67);
+            font-size: 1.1rem;
+
+            /* 確保它是區塊元素，間距才會正確生效 */
+            &.required::after {
+                content: " *"; // 星號內容
+                color: red; // 星號顏色
+                margin-left: 4px; // 與文字的間距
+            }
+        }
+    }
+
+    textarea.form-control {
+        height: auto;
+        /* 讓 rows 決定高度，或直接寫死高度 */
+        min-height: 120px;
+        /* 設定最小高度，確保看起來夠大 */
+        resize: vertical;
+        /* 只允許垂直調整大小，避免左右拉動破壞版面 */
+        padding: 12px;
+        border-radius: 8px;
+
+        /* 讓輸入框佔滿你設定的 max-width (例如 500px) */
+        width: 100%;
+    }
+
+    .error-message {
+        color: rgb(199, 82, 82);
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    h3 {
+        color: rgb(109, 77, 67);
+        font-weight: bold;
+    }
+
+    .btn-brown {
+        width: 100%;
+        max-width: 800px;
+        padding: 10px;
+        color: white;
+        background-color: rgb(109, 77, 67);
+        margin-top: 1rem;
+        border-radius: 12px;
+        border: none;
+
+        &:hover:not(:disabled) {
+            // 滑過時的背景與文字顏色
+            background-color: rgb(245, 197, 185);
+            color: rgb(109, 77, 67);
+            cursor: pointer;
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+    }
+}
+
+// 登入頁面
+
+.login-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+
+
+    .login-card {
+        background-color: rgb(252, 240, 237);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .login-title {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: rgb(109, 77, 67);
+        font-weight: bold;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* 讓內部的 form-group 置中 */
+        width: 100%;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        width: 100%;
+        max-width: 280px;
+        align-items: stretch;
+
+        span {
+            color: rgb(199, 82, 82);
+        }
+    }
+
+    label {
+        color: rgb(109, 77, 67);
+        margin-bottom: 0.3rem;
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        margin-bottom: 0.3rem;
+
+        &:focus {
+            outline: none;
+            border-color: white;
+        }
+
+
+    }
+
+    .btn-brown {
+        width: 100%;
+        max-width: 280px;
+        padding: 10px;
+        color: white;
+        background-color: rgb(109, 77, 67);
+        margin-top: 0.5rem;
+        border: none;
+
+
+        &:hover {
+            // 滑過時的背景與文字顏色
+            background-color: rgb(245, 197, 185);
+            color: rgb(109, 77, 67);
+        }
     }
 }

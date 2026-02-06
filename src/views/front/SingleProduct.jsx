@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 const SingleProduct = () => {
-    const [qty, setQty] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [qty, setQty] = useState(1);
     const [cartItem, setCartItem] = useState([]);
     const [product, setproduct] = useState({});
     const { id } = useParams();
@@ -29,13 +31,14 @@ const SingleProduct = () => {
             }
         }
         try {
-            const res = await axios.post(`${API_BASE}/api/${API_PATH}/cart`, sentData)
-
-            console.log(`已成功加入購物車`);
+            setIsLoading(true);
+            const res = await axios.post(`${API_BASE}/api/${API_PATH}/cart`, sentData);
             getCart();
         } catch (error) {
-            console.log("資料錯誤", error.response.data)
-        };
+            console.log("資料錯誤", error.response.data);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -80,7 +83,8 @@ const SingleProduct = () => {
                             </div>
                         </div>
                         <div className="d-flex gap-2">
-                            <button type="button" className="btn btn-outline-brown" onClick={() => { addToCart(product.id, qty) }}><i className="bi bi-cart-fill"></i>加入購物車</button>
+                            <button type="button" className="btn btn-outline-brown" onClick={() => { addToCart(product.id, qty) }} disabled={isLoading}>
+                                {isLoading ? <div className="custom-loading"><Loading height={20} width={20} /> 正在加入購物車</div> : <div><i className="bi bi-cart-fill"></i>加入購物車</div>}</button>
                         </div>
                     </div>
                 </div>
