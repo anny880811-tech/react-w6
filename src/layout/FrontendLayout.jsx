@@ -12,7 +12,7 @@ const FrontendLayout = () => {
                         <Link className="nav-link-item" to='/cart'>購物車</Link>
                     </div>
                     <div className="nav-login-group">
-                        <Link className="nav-link-item" to='/login'>登入後台</Link>
+                        <Link className="nav-link-item" to='/login'>後台登入</Link>
                     </div>
                 </nav>
             </header>

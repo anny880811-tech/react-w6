@@ -271,7 +271,9 @@ body {
 .custom-cart {
     @extend .mt-3;
     color: rgb(109, 77, 67);
-    font-weight: bold;
+    font-weight: bold; 
+    display: flex;
+    justify-content:space-between
 }
 
 .custom-cart-table {

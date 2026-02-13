@@ -52,6 +52,19 @@ const Cart = () => {
             console.log("資料錯誤", error.response.data);
         }
     }
+
+    const deleteAllCartItem = async () => {
+        try {
+            setIsLoading('loading-delete');
+            const res = await axios.delete(`${API_BASE}/api/${API_PATH}/carts`)
+            getCart();
+        } catch (error) {
+            console.log("資料錯誤", error.response.data);
+        } finally {
+            setIsLoading('');
+        }
+    }
+
     const onSubmit = async (data) => {
         const { userName, email, tel, address, message } = data;
         try {
@@ -81,7 +94,7 @@ const Cart = () => {
         <div className="container mt-3">
             <div className="row">
                 <div className="col">
-                    <h3 className="custom-cart">我的購物車</h3>
+                    <h3 className="custom-cart">我的購物車 <button type="button" className="btn btn-danger" onClick={deleteAllCartItem}>{isLoading==='loading-delete'?'正在清空購物車...':'清空購物車'}</button></h3>
                     <table className="custom-cart-table">
                         <thead>
                             <tr>
