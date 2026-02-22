@@ -35,9 +35,8 @@ const AdminProducts = () => {
             const res = await axios.get(`${API_BASE}/api/${API_PATH}/admin/products?page=${page}`);
             setProductList(res.data.products);
             setPagination(res.data.pagination)
-            console.log(res.data);
         } catch (error) {
-            console.log(error.response);
+            alert('資料錯誤',error.response);
         }
     }
 
@@ -88,11 +87,10 @@ const AdminProducts = () => {
                     data: payload,
                 });
             }
-            console.log(res.data);
             closeModal();
             getProducts();
         } catch (error) {
-            console.log(error.response);
+            alert('資料錯誤',error.response);
         } finally {
             setIsLoading('');
         }
@@ -126,7 +124,6 @@ const AdminProducts = () => {
             ...pre,
             [name]: formatValue(e.target)
         }))
-        console.log(temProduct);
     };
 
     const uploadImage = async (e) => {
@@ -138,16 +135,14 @@ const AdminProducts = () => {
         try {
             const formData = new FormData()
             formData.append('file-to-upload', file)
-
             const response = await axios.post(`${API_BASE}/api/${API_PATH}/admin/upload`, formData)
-
             setTemProduct((pre) => ({
                 ...pre,
                 imageUrl: response.data.imageUrl,
             }))
 
         } catch (error) {
-            console.log(error.response)
+            alert('資料錯誤',error.response);
         } finally {
             setIsLoading('');
         }

@@ -1,5 +1,11 @@
 @import "bootstrap/scss/bootstrap";
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 @mixin full-size {
     position: absolute;
     top: 0;
@@ -25,6 +31,7 @@
         opacity: 0.6;
         color: rgb(246, 133, 105);
         pointer-events: none;
+
         .custom-loading {
             color: rgb(246, 133, 105);
         }
@@ -47,6 +54,7 @@
         opacity: 0.6;
         color: rgb(114, 90, 83);
         pointer-events: none;
+
         .custom-loading {
             color: rgb(114, 90, 83);
         }
@@ -58,6 +66,21 @@
     color: white;
     font-weight: bold;
     border-radius: 15px;
+
+    &:hover {
+        // 滑過時的背景與文字顏色
+        background-color: rgb(253, 229, 223);
+    }
+}
+
+.bg-deepPink {
+    background-color: rgb(245, 197, 185);
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    padding: 0.5em 1em;
+    font-size: 1.3rem;
+    line-height: 1.5;
 
     &:hover {
         // 滑過時的背景與文字顏色
@@ -79,35 +102,72 @@ h4 {
 }
 
 // 針對整個網頁的底色
+html {
+    overflow-x: hidden;
+    /* 負責鎖住寬度 */
+    height: 100%;
+    /* 確保高度參考鏈完整 */
+}
+
 body {
     background-color: rgb(253, 229, 223);
+    overflow-x: hidden;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 // Layout 專用樣式
 .custom-navbar {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
     background-color: rgb(245, 197, 185);
     display: flex;
     justify-content: space-between; // 讓左右兩組分開
     align-items: center;
-    padding: 0.5%;
+    padding: 0.2%;
+    margin: 0;
     min-height: 60px;
     flex-wrap: wrap;
 
-    .nav-links-group .nav-login-group {
+    .nav-links-group,
+    .nav-login-group {
         display: flex;
         align-items: center;
+        flex-wrap: nowrap;
+        white-space: nowrap;
     }
 
     .nav-link-item {
         color: white;
         text-decoration: none;
-        font-size: 1.6rem;
-        margin: 1rem 1.5rem;
+        font-size: 1rem;
+        margin: 0.3rem 0.5rem;
         margin-block-end: 0.2rem;
         font-weight: 550;
+        word-break: keep-all;
 
         &:hover {
             color: rgb(249, 149, 121);
+        }
+
+        @include media-breakpoint-up(md) {
+            font-size: 1.6rem;
+            margin: 1rem 1.5rem;
         }
     }
 }
@@ -202,6 +262,72 @@ body {
     }
 }
 
+// 骨架屏閃爍動畫
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+// 骨架屏佔位元件通用樣式
+.skeleton-box {
+    background: linear-gradient(90deg,
+            rgba(109, 77, 67, 0.05) 25%,
+            rgba(109, 77, 67, 0.15) 50%,
+            rgba(109, 77, 67, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 4px;
+}
+
+// 骨架屏專用卡片擴充
+.skeleton-card {
+    @extend .custom-card; // 繼承你原本 custom-card 的背景、邊框、圓角
+    pointer-events: none;
+
+    .skeleton-img {
+        @extend .skeleton-box;
+        width: 100%;
+        aspect-ratio: 4/3; // 確保與 .custom-card-img 比例一致
+        border-radius: 12px 12px 0 0;
+    }
+
+    .skeleton-body {
+        padding: 1rem; // 對齊你的 .custom-card-body
+    }
+
+    .skeleton-title {
+        @extend .skeleton-box;
+        height: 1.5rem;
+        width: 60%;
+        margin: 0.5rem 0 1rem 0; // 對齊 h5 的 margin
+    }
+
+    .skeleton-text {
+        @extend .skeleton-box;
+        height: 1rem;
+        width: 80%;
+        margin-bottom: 1.2rem; // 對齊價格與分類的間距
+    }
+
+    .skeleton-btn-group {
+        display: flex;
+        gap: 0.5rem; // 對齊 gap-2
+        margin-top: 0.5rem;
+
+        .skeleton-btn {
+            @extend .skeleton-box;
+            flex: 1;
+            height: 38px; // 模擬按鈕高度
+            border-radius: 6px;
+        }
+    }
+}
+
 
 // 產品詳細頁專用樣式
 .main-image-container {
@@ -222,8 +348,10 @@ body {
 .thumb-scroll-container {
     display: flex;
     padding-bottom: 8px;
-    justify-content: center;
-    gap: 7px;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-x: auto; // 確保縮圖過多時可以左右滑動
+    white-space: nowrap;
 
     &::-webkit-scrollbar {
         height: 4px;
@@ -235,8 +363,8 @@ body {
     }
 
     .thumb-item {
-        width: 130px;
-        height: 130px;
+        width: 90px;
+        height: 90px;
         flex-shrink: 0;
         object-fit: cover;
         cursor: pointer;
@@ -255,6 +383,16 @@ body {
         &.active {
             border-color: rgb(109, 77, 67);
         }
+
+        @include media-breakpoint-up(md) {
+            width: 110px;
+            height: 110px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            width: 125px;
+            height: 125px;
+        }
     }
 }
 
@@ -266,14 +404,73 @@ body {
     }
 }
 
+.text-deep-brown {
+    color: rgb(109, 77, 67); // 使用你原本定義的主色
+}
+
+.price-group {
+    .fs-2 {
+        font-size: 2rem; // 售價大一點
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.75rem; // 手機版稍微收斂
+        }
+    }
+    .lh-1 {
+        line-height: 1; // 移除多餘的行高，讓底部對齊更精準
+    }
+}
+
 
 // 產品購物車專用樣式
+@media (max-width: 767.98px) {
+    .custom-cart-table {
+        display: none;
+        /* 隱藏傳統表格 */
+    }
+
+    /* 調整圖片大小與表單間距 */
+    .cart-form {
+        padding: 15px;
+    }
+}
+
+.cart-isPageLoading {
+    @extend .mt-3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 5%;
+
+    h2 {
+        font-weight: bold;
+    }
+}
+
+.custom-emptyCart {
+    @extend .mt-3;
+    background-color: white;
+    color: rgb(109, 77, 67);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 5%;
+
+    h2 {
+        font-weight: bold;
+    }
+}
+
 .custom-cart {
     @extend .mt-3;
     color: rgb(109, 77, 67);
-    font-weight: bold; 
+    font-weight: bold;
     display: flex;
-    justify-content:space-between
+    justify-content: space-between
 }
 
 .custom-cart-table {

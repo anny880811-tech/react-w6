@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import Loading from "../../components/Loading";
+import getProductsError from "../../utils/pushMessage";
 
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -9,9 +10,11 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 
 const Products = () => {
     const [isLoading, setIsLoading] = useState('');
+    const [IsPageLoading, setIsPageLoading] = useState(true);
     const [products, setproducts] = useState([]);
     const [cartItem, setCartItem] = useState([]);
     const navigate = useNavigate();
+
 
     useEffect(() => {
         const getProducts = async () => {
@@ -20,8 +23,8 @@ const Products = () => {
                 setproducts(res.data.products);
                 getCart();
             } catch (error) {
-                console.dir("資料錯誤", error?.response?.data)
-            };
+                getProductsError(error);
+            } finally { setIsPageLoading(false); }
         };
         getProducts();
     }, []);
@@ -33,7 +36,7 @@ const Products = () => {
             const res = await axios.get(`${API_BASE}/api/${API_PATH}/cart`);
             setCartItem(res.data.data.carts);
         } catch (error) {
-            console.dir("資料錯誤", error?.response?.data)
+            getProductsError(error);
         }
     };
 
@@ -49,19 +52,40 @@ const Products = () => {
             const res = await axios.post(`${API_BASE}/api/${API_PATH}/cart`, sentData)
             getCart();
         } catch (error) {
-            console.log("資料錯誤", error.response.data)
+            getProductsError(error);
         } finally {
             setIsLoading('');
         }
     };
+    if (IsPageLoading) {
+        return <div className="container mt-5">
+            <div className="row gx-3 gy-5">
+                {Array.from({ length: 6 }, (_, i) => {
+                    return (<div className="col-12 col-md-6 col-lg-4" key={i}>
+                        <div className="skeleton-card">
+                            <div className="skeleton-img"></div>
+                            <div className="skeleton-body"></div>
+                            <div className="skeleton-title"></div>
+                            <div className="skeleton-text"></div>
+                            <div className="skeleton-btn-group">
+                                <div className="skeleton-btn"></div>
+                                <div className="skeleton-btn"></div>
+                            </div>
+                        </div>
+                    </div>
+                    )
+                })}
 
+            </div>
+        </div>
+    }
     return (<>
         <div className="container mt-5">
             <div className="row gx-3 gy-5">
 
                 {products.map((product) => {
                     return (
-                        <div className="col-4" key={product.id}>
+                        <div className="col-12 col-md-6 col-lg-4" key={product.id}>
                             <div className="custom-card">
                                 <img src={product.imageUrl} className="custom-card-img" alt="主圖" />
                                 <div className="custom-card-body">
@@ -78,13 +102,8 @@ const Products = () => {
                         </div>
                     )
                 })}
-
             </div>
-
-
         </div>
-
-
     </>);
 };
 
